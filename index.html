@@ -80,11 +80,16 @@
 </head>
 <body>
   <h1>🎬 Welcome to Adam Theater</h1>
-  <div id="movies"></div>
+  <div id="movies">
+    <div class="movie" onclick="selectMovie('A Minecraft Movie', 900)">A Minecraft Movie — 900 EGP</div>
+    <div class="movie" onclick="selectMovie('Squid Game (Gold)', 1000)">Squid Game (Gold) — 1000 EGP</div>
+    <div class="movie" onclick="selectMovie('Mr. Popper\'s Penguins', 200)">Mr. Popper's Penguins — 200 EGP</div>
+    <div class="movie" onclick="selectMovie('LEGO Star Wars', 90)">LEGO Star Wars — 90 EGP</div>
+  </div>
 
   <div id="purchase" class="hidden">
     <p id="movieInfo"></p>
-    <button id="confirmButton">Confirm Purchase</button>
+    <button onclick="confirmPurchase()">Confirm Purchase</button>
   </div>
 
   <div id="ticketSection" class="hidden">
@@ -95,8 +100,7 @@
       <p>🎫 Admit One</p>
       <p>Seat: Row A, Seat 7</p>
       <p>Date: 23/04/2025</p>
-      <button id="enterButton">Enter Theater</button>
-      <button onclick="printTicket()">Print Ticket</button>
+      <button onclick="enterTheater()">Enter Theater</button>
     </div>
   </div>
 
@@ -105,75 +109,50 @@
   </div>
 
   <script>
-    const movies = [
-      { name: "A Minecraft Movie", price: 900, code: "8B1EtVPBSMw" },
-      { name: "Squid Game (Gold)", price: 1000, code: "oqxAJKy0ii4" },
-      { name: "Mr. Popper's Penguins", price: 200, code: "7Bf53p5PGPQ" },
-      { name: "LEGO Star Wars", price: 90, code: "0vNXYyxUFhQ", special: true },
-      { name: "Mufasa: The Lion King", price: 700, code: "o17MF9vnabg" },
-      { name: "Sonic the Hedgehog 3", price: 100, code: "AcPm1c7_vKY" },
-      { name: "Sonic the Hedgehog", price: 222, code: "sPGu9IukIIk" },
-      { name: "The Day the Earth Blew Up", price: 600, code: "P5BKvFmjZ0o" }
-    ];
+    let selectedMovie = "";
+    let selectedPrice = 0;
 
-    let selectedMovie = null;
-
-    const moviesContainer = document.getElementById("movies");
-    movies.forEach(movie => {
-      const div = document.createElement("div");
-      div.className = "movie";
-      div.textContent = `${movie.name} — ${movie.price} EGP`;
-      div.addEventListener("click", () => selectMovie(movie));
-      moviesContainer.appendChild(div);
-    });
-
-    function selectMovie(movie) {
+    function selectMovie(movie, price) {
       selectedMovie = movie;
-      document.getElementById("movieInfo").textContent = `You selected: ${movie.name} — ${movie.price} EGP`;
+      selectedPrice = price;
+      document.getElementById("movieInfo").textContent = `You selected: ${movie} — ${price} EGP`;
       document.getElementById("purchase").classList.remove("hidden");
     }
 
-    document.getElementById("confirmButton").addEventListener("click", () => {
+    function confirmPurchase() {
       const ticket = document.getElementById("ticket");
-      document.getElementById("ticketMovie").textContent = `Movie: ${selectedMovie.name}`;
-      document.getElementById("ticketPrice").textContent = `Price: ${selectedMovie.price} EGP`;
+      document.getElementById("ticketMovie").textContent = `Movie: ${selectedMovie}`;
+      document.getElementById("ticketPrice").textContent = `Price: ${selectedPrice} EGP`;
       document.getElementById("purchase").classList.add("hidden");
       document.getElementById("ticketSection").classList.remove("hidden");
 
-      if (selectedMovie.special) {
+      if (selectedMovie === "LEGO Star Wars") {
         ticket.classList.add("lego");
       } else {
         ticket.classList.remove("lego");
       }
-    });
+    }
 
-    document.getElementById("enterButton").addEventListener("click", () => {
+    function enterTheater() {
       document.getElementById("ticketSection").classList.add("hidden");
       document.getElementById("theater").classList.remove("hidden");
 
-      const screen = document.getElementById("theaterScreen");
-      if (selectedMovie.code) {
-        screen.innerHTML = `<iframe src="https://www.youtube.com/embed/${selectedMovie.code}?autoplay=1" allowfullscreen></iframe>`;
+      if (selectedMovie === "LEGO Star Wars") {
+        document.getElementById("theaterScreen").innerHTML = `
+          <iframe src="https://www.youtube.com/embed/0vNXYyxUFhQ?autoplay=1" allowfullscreen></iframe>
+        `;
+      } else if (selectedMovie === "Mr. Popper's Penguins") {
+        document.getElementById("theaterScreen").innerHTML = `
+          <iframe src="https://www.youtube.com/embed/7Bf53p5PGPQ?autoplay=1" allowfullscreen></iframe>
+        `;
+      } else if (selectedMovie === "Squid Game (Gold)") {
+        document.getElementById("theaterScreen").innerHTML = `
+          <iframe src="https://www.youtube.com/embed/oqxAJKy0ii4?autoplay=1" allowfullscreen></iframe>
+        `;
       } else {
-        screen.textContent = `🎬 Now Playing: ${selectedMovie.name}`;
+        document.getElementById("theaterScreen").textContent = `🎬 Now Playing: ${selectedMovie}`;
       }
-    });
-
-    function printTicket() {
-      const ticket = document.getElementById("ticket");
-      const printWindow = window.open('', '_blank');
-      printWindow.document.write('<html><head><title>Print Ticket</title></head><body>');
-      printWindow.document.write(ticket.outerHTML);
-      printWindow.document.write('</body></html>');
-      printWindow.document.close();
-      printWindow.print();
     }
   </script>
 </body>
 </html>
-
-
-
-
-
-
