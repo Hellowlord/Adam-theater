@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adam Theater</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .movie {
+      background: #222;
+      border: 2px solid gold;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    #ticket {
+      margin: 30px auto;
+      background: repeating-linear-gradient(
+        45deg,
+        #f5c518,
+        #f5c518 10px,
+        #e4b400 10px,
+        #e4b400 20px
+      );
+      color: black;
+      padding: 20px;
+      width: 320px;
+      border-radius: 10px;
+      border: 2px dashed black;
+      box-shadow: 0 0 10px #f5c518;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    #ticket.lego {
+      background: #d3d3d3;
+      color: black;
+      border: 3px dotted red;
+      box-shadow: 0 0 12px #ff0000;
+    }
+    #ticket h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    #ticket p {
+      margin: 5px 0;
+    }
+    #theaterScreen {
+      margin-top: 40px;
+      background: black;
+      padding: 100px 20px;
+      font-size: 24px;
+      border: 3px solid #555;
+      border-radius: 12px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Welcome to Adam Theater</h1>
+  <div id="movies">
+    <div class="movie" onclick="selectMovie('A Minecraft Movie', 900)">A Minecraft Movie — 900 EGP</div>
+    <div class="movie" onclick="selectMovie('Squid Game (Gold)', 1000)">Squid Game (Gold) — 1000 EGP</div>
+    <div class="movie" onclick="selectMovie('Mr. Popper\'s Penguins', 200)">Mr. Popper's Penguins — 200 EGP</div>
+    <div class="movie" onclick="selectMovie('LEGO Star Wars', 90)">LEGO Star Wars — 90 EGP</div>
+    <div class="movie" onclick="selectMovie('Mufasa: The Lion King', 700)">Mufasa: The Lion King — 700 EGP</div>
+    <div class="movie" onclick="selectMovie('Sonic the Hedgehog 3', 100)">Sonic the Hedgehog 3 — 100 EGP</div>
+    <div class="movie" onclick="selectMovie('Sonic the Hedgehog', 222)">Sonic the Hedgehog — 222 EGP</div>
+  </div>
+
+  <div id="purchase" class="hidden">
+    <p id="movieInfo"></p>
+    <button onclick="confirmPurchase()">Confirm Purchase</button>
+  </div>
+
+  <div id="ticketSection" class="hidden">
+    <div id="ticket">
+      <h2>🎟️ Adam Theater Ticket</h2>
+      <p id="ticketMovie"></p>
+      <p id="ticketPrice"></p>
+      <p>🎫 Admit One</p>
+      <p>Seat: Row A, Seat 7</p>
+      <p>Date: 23/04/2025</p>
+      <button onclick="enterTheater()">Enter Theater</button>
+      <button onclick="printTicket()">Print Ticket</button>
+    </div>
+  </div>
+
+  <div id="theater" class="hidden">
+    <div id="theaterScreen"></div>
+  </div>
+
+  <script>
+    let selectedMovie = "";
+    let selectedPrice = 0;
+
+    function selectMovie(movie, price) {
+      selectedMovie = movie;
+      selectedPrice = price;
+      document.getElementById("movieInfo").textContent = `You selected: ${movie} — ${price} EGP`;
+      document.getElementById("purchase").classList.remove("hidden");
+    }
+
+    function confirmPurchase() {
+      const ticket = document.getElementById("ticket");
+      document.getElementById("ticketMovie").textContent = `Movie: ${selectedMovie}`;
+      document.getElementById("ticketPrice").textContent = `Price: ${selectedPrice} EGP`;
+      document.getElementById("purchase").classList.add("hidden");
+      document.getElementById("ticketSection").classList.remove("hidden");
+
+      if (selectedMovie === "LEGO Star Wars") {
+        ticket.classList.add("lego");
+      } else {
+        ticket.classList.remove("lego");
+      }
+    }
+
+    function enterTheater() {
+      document.getElementById("ticketSection").classList.add("hidden");
+      document.getElementById("theater").classList.remove("hidden");
+
+      const screen = document.getElementById("theaterScreen");
+      const videos = {
+        "LEGO Star Wars": "0vNXYyxUFhQ",
+        "Mr. Popper's Penguins": "7Bf53p5PGPQ",
+        "Squid Game (Gold)": "oqxAJKy0ii4",
+        "A Minecraft Movie": "8B1EtVPBSMw",
+        "Mufasa: The Lion King": "o17MF9vnabg",
+        "Sonic the Hedgehog 3": "AcPm1c7_vKY",
+        "Sonic the Hedgehog": "sPGu9IukIIk"
+      };
+
+      if (videos[selectedMovie]) {
+        screen.innerHTML = `<iframe src="https://www.youtube.com/embed/${videos[selectedMovie]}?autoplay=1" allowfullscreen></iframe>`;
+      } else {
+        screen.textContent = `🎬 Now Playing: ${selectedMovie}`;
+      }
+    }
+
+    function printTicket() {
+      const ticket = document.getElementById("ticket");
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write('<html><head><title>Print Ticket</title></head><body>');
+      printWindow.document.write(ticket.outerHTML);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
