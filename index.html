@@ -1,84 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adam Theater</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 30px;
-    }
-    .movie {
-      background: #222;
-      border: 2px solid gold;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
-    }
-    #ticket {
-      margin: 30px auto;
-      background: repeating-linear-gradient(
-        45deg,
-        #f5c518,
-        #f5c518 10px,
-        #e4b400 10px,
-        #e4b400 20px
-      );
-      color: black;
-      padding: 20px;
-      width: 320px;
-      border-radius: 10px;
-      border: 2px dashed black;
-      box-shadow: 0 0 10px #f5c518;
-      font-family: 'Courier New', Courier, monospace;
-    }
-    #ticket.lego {
-      background: #d3d3d3;
-      color: black;
-      border: 3px dotted red;
-      box-shadow: 0 0 12px #ff0000;
-    }
-    #ticket h2 {
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-    #ticket p {
-      margin: 5px 0;
-    }
-    #theaterScreen {
-      margin-top: 40px;
-      background: black;
-      padding: 100px 20px;
-      font-size: 24px;
-      border: 3px solid #555;
-      border-radius: 12px;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    iframe {
-      width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 12px;
-    }
+    body { background: #111; color: #fff; font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    h1 { margin-bottom: 20px; }
+    .logo { width: 120px; margin-bottom: 20px; }
+    .movie { background: #222; margin: 10px; padding: 20px; border: 2px solid gold; border-radius: 10px; cursor: pointer; }
+    .hidden { display: none; }
+    #ticket { background: repeating-linear-gradient(45deg, #f5c518, #f5c518 10px, #e4b400 10px, #e4b400 20px); color: #000; padding: 20px; width: 320px; margin: 20px auto; border-radius: 10px; border: 2px dashed #000; }
+    #ticket.lego { background: #d3d3d3; border: 3px dotted red; }
+    button { margin-top: 15px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    iframe { width: 100%; height: 400px; border: none; border-radius: 12px; margin-top: 20px; }
   </style>
 </head>
 <body>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Movies-icon.png" alt="Adam Theater Logo" class="logo">
   <h1>🎬 Welcome to Adam Theater</h1>
   <div id="movies"></div>
 
@@ -94,7 +33,7 @@
       <p id="ticketPrice"></p>
       <p>🎫 Admit One</p>
       <p>Seat: Row A, Seat 7</p>
-      <p>Date: 23/04/2025</p>
+      <p>Date: 28/04/2025</p>
       <button id="enterButton">Enter Theater</button>
       <button onclick="printTicket()">Print Ticket</button>
     </div>
@@ -115,7 +54,8 @@
       { name: "Sonic the Hedgehog", price: 222, code: "sPGu9IukIIk" },
       { name: "The Day the Earth Blew Up", price: 600, code: "P5BKvFmjZ0o" },
       { name: "Siko Siko", price: 300, code: "dLSdsqr2rQw" },
-      { name: "Moana 2", price: 100, code: "hDZ7y8RP5HE" }
+      { name: "Moana 2", price: 100, code: "hDZ7y8RP5HE" },
+      { name: "Wonka", price: 400, code: "wYmtRhKvmVE" }
     ];
 
     let selectedMovie = null;
@@ -154,11 +94,7 @@
       document.getElementById("theater").classList.remove("hidden");
 
       const screen = document.getElementById("theaterScreen");
-      if (selectedMovie.code) {
-        screen.innerHTML = `<iframe src="https://www.youtube.com/embed/${selectedMovie.code}?autoplay=1" allowfullscreen></iframe>`;
-      } else {
-        screen.textContent = `🎬 Now Playing: ${selectedMovie.name}`;
-      }
+      screen.innerHTML = `<iframe src="https://www.youtube.com/embed/${selectedMovie.code}?autoplay=1" allowfullscreen></iframe>`;
     });
 
     function printTicket() {
